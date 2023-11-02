@@ -15,31 +15,22 @@ class Lifo:
 
 class TaskManager:
     def __init__(self):
-        self.stack = []
+        self.stack = {}
 
-    def new_task(self, s, n):
-        tpr = (s, n)
-        if tpr not in self.stack:
-            self.stack.append(tpr)
+    def new_task(self, task, priority):
+        if priority in self.stack.keys():
+            self.stack[priority].append(task)
+        else:
+            self.stack[priority] = task.split(',')
 
     def del_task(self):
-        del (self.stack[-1])
+        self.stack.popitem()
 
     def priority_task(self):
-        res = []
-        l = []
-        if len(self.stack) > 0:
-            for i in range(len(self.stack)):
-                res.append(self.stack[i][1])
-        res.sort()
-        resl = list(set(res))
-        for i in range(len(resl)):
-            for k in range(len(self.stack)):
-                if resl[i] == self.stack[k][1]:
-                    tpf = (self.stack[k][0], resl[i])
-                    l.append(tpf)
-        for i in range(len(l)):
-            print(l[i][1], l[i][0])
+        keys = self.stack.keys()
+        sorted_keys = sorted(keys)
+        for i in range(len(sorted_keys)):
+            print(sorted_keys[i], '; '.join(self.stack[sorted_keys[i]]))
 
 
 manager = TaskManager()
